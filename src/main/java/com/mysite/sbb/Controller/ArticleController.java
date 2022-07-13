@@ -25,7 +25,28 @@ public class ArticleController {
 
     @RequestMapping("/list")
     @ResponseBody
-    public List<Article> showList() {
+    public List<Article> showList(String title, String body) {
+        if( title != null && body == null) {
+            if( articleRepository.existsByTitle(title) == false) {
+                System.out.println("제목과 일치하는 게시물이 없습니다.");
+                return null;
+            }
+            return articleRepository.findByTitle(title);
+
+        } else if( title == null && body != null) {
+            if( articleRepository.existsByBody(body) == false) {
+                System.out.println("내용과 일치하는 게시물이 없습니다.");
+                return null;
+            }
+            return articleRepository.findByBody(body);
+        } else if( title != null && body != null) {
+            if( articleRepository.existsByTitleAndBody(title,body) == false) {
+                System.out.println("제목과 내용이 일치하는 게시물이 없습니다.");
+                return null;
+            }
+            return articleRepository.findByTitleAndBody(title,body);
+        }
+
         return articleRepository.findAll();
     }
 
@@ -74,5 +95,29 @@ public class ArticleController {
         return article;
     }
 
+    @RequestMapping("/doWrite")
+    @ResponseBody
+    public String doWrite(String title, String body) {
+        if( title == null || title.trim().length() == 0) {
+            return "제목을 입력해주세요";
+        }
+
+        if( body == null || body.trim().length() == 0) {
+            return "내용을 입력해주세요";
+        }
+
+        title = title.trim();
+        body = body.trim();
+
+        Article article = new Article();
+        article.setRegDate(LocalDateTime.now());
+        article.setUpdateDate(LocalDateTime.now());
+        article.setBody(body);
+        article.setTitle(title);
+
+        articleRepository.save(article);
+
+        return "%d번 게시물이 생성되었습니다.".formatted(article.getId());
+    }
 
 }
