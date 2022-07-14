@@ -2,6 +2,7 @@ package com.mysite.sbb.Controller;
 
 import com.mysite.sbb.Dao.QuestionRepository;
 import com.mysite.sbb.Domain.Question;
+import com.mysite.sbb.Service.QuestionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,19 +17,15 @@ import java.util.List;
 @AllArgsConstructor
 public class QuestionController {
 
-    private final QuestionRepository questionRepository;
+    private QuestionService questionService;
 
-    @RequestMapping("/list1")
-    @ResponseBody
-    public List<Question> showQuestions() {
-        return questionRepository.findAll();
-    }
 
 
     @RequestMapping("/list")
     public String QuestionList(Model model) {
-        List<Question> questionList = questionRepository.findAll();
+        List<Question> questionList =questionService.getList();
+
         model.addAttribute("questionList",questionList);
-        return "question_list";
+        return "question_List";
     }
 }
