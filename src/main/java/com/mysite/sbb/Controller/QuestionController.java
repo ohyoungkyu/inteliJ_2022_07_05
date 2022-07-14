@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -19,13 +20,17 @@ public class QuestionController {
 
     private QuestionService questionService;
 
-
-
     @RequestMapping("/list")
-    public String QuestionList(Model model) {
+    public String showQuestions(Model model) {
         List<Question> questionList =questionService.getList();
 
         model.addAttribute("questionList",questionList);
         return "question_List";
+    }
+
+    @RequestMapping("/detail/{id}")
+    public String showQuestions(Model model, @PathVariable("id") Integer id) {
+
+        return "question_detail";
     }
 }
