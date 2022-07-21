@@ -15,6 +15,6 @@ public class MainController {
     @RequestMapping("/sbb")
     @ResponseBody
     public String index() {
-        return "index2";
+        return "index4";
     }
 }

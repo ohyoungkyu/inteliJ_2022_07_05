@@ -9,9 +9,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Question {
     @Id
@@ -25,6 +25,8 @@ public class Question {
     private String content;
 
     private LocalDateTime createDate;
+
+    private int viewCount;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     private List<Answer> answerList;

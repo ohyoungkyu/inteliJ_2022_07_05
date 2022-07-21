@@ -8,9 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.IntSequenceGenerator.class)
 public class Answer {
     @Id
@@ -22,7 +22,21 @@ public class Answer {
 
     private LocalDateTime createDate;
 
+    private Boolean replyLike;
+
     @ManyToOne
     private Question question;
 
+}
+@Converter
+class BooleanToYNConverter implements AttributeConverter<Boolean, String>{
+    @Override
+    public String convertToDatabaseColumn(Boolean attribute){
+        return (attribute != null && attribute) ? "Y" : "N";
+    }
+
+    @Override
+    public Boolean convertToEntityAttribute(String dbData){
+        return "Y".equals(dbData);
+    }
 }

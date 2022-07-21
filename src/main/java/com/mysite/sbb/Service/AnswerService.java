@@ -1,7 +1,6 @@
 package com.mysite.sbb.Service;
 
 import com.mysite.sbb.Dao.AnswerRepository;
-import com.mysite.sbb.Dao.QuestionRepository;
 import com.mysite.sbb.Domain.Answer;
 import com.mysite.sbb.Domain.Question;
 import lombok.AllArgsConstructor;
@@ -20,7 +19,17 @@ public class AnswerService {
         answer.setContent(content);
         answer.setCreateDate(LocalDateTime.now());
         answer.setQuestion(question);
+        answer.setReplyLike(false);
         this.answerRepository.save(answer);
     }
 
+    public void setLike(Integer answerId) {
+        Answer answer = answerRepository.findById(answerId).get();
+        if(answer.getReplyLike() == true) {
+            answer.setReplyLike(false);
+        } else {
+            answer.setReplyLike(true);
+        }
+        this.answerRepository.save(answer);
+    }
 }
